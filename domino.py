@@ -6,11 +6,21 @@ def soma(a, b):
 
     return a + b
 
-def pontas(p):
+def soma_pontas(p):
 
     return p[0]+p[1]
 
-def pontas_p(a, m):
+def pontap(pt):
+
+    if len(pt) == 2:
+
+        return pedrap(pt) and carrocap(pt)
+
+    else:
+        
+        return 0 <= pt[0] <= 6 
+
+def retorna_pedras_ponta(a, m):
 
     return [p for p in m if a == p[0] or a == p[1]]
 
@@ -60,7 +70,7 @@ def tem_carrocas(m):
 
 def pontos(m):
 
-    return reduce(soma, [pontas(p) for p in m])
+    return reduce(soma, [soma_pontas(p) for p in m])
 
 # P07
 
@@ -92,13 +102,13 @@ def ocorre_pedra_p(p, m):
 
 def ocorre_valor_p(a, m):
 
-    return len(pontas_p(a, m)) > 0
+    return len(retorna_pedras_ponta(a, m)) > 0
 
 # P11
 
 def ocorre_pedra(v, m):
 
-    return pontas_p(v, m)
+    return retorna_pedras_ponta(v, m)
 
 # P12
 
@@ -106,7 +116,7 @@ def pedra_maior(m):
 
     def maiores_que(p, m):
 
-        return [x for x in m if pontas(x) > pontas(p)]
+        return [x for x in m if soma_pontas(x) > soma_pontas(p)]
 
     return [y for y in m if maiores_que(y, m) == []][0]
 
@@ -132,4 +142,10 @@ def tira_maior(m):
 
 def tira_maior_v(v, m):
 
-    return pedra_maior(pontas_p(v, m))
+    return pedra_maior(retorna_pedras_ponta(v, m))
+
+# P17
+
+def mesap(ms):
+
+    return [pt for pt in ms if not pontap(pt)] == [] and len(ms) == 4
