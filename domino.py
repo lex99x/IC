@@ -1,11 +1,24 @@
-from domino_fn import *
 from functools import reduce
+
+# Funções gerais
+
+def soma(a, b):
+
+    return a + b
+
+def soma_pontas(p):
+
+    return p[0]+p[1]
+
+def retorna_pedras_ponta(a, m):
+
+    return [p for p in m if a == p[0] or a == p[1]]
 
 # P01:
 
 def pedrap(p):
 
-    return (0 <= p[0] <= 6  and 0 <= p[1] <=6)
+    return 0 <= p[0] <= 6  and 0 <= p[1] <=6
 
 # P02:
 
@@ -29,13 +42,13 @@ def maop(m):
 
 def carrocap(p):
 
-    return (p[0] == p[1])
+    return p[0] == p[1]
 
 # P04:
 
 def tem_carroca_p(m):
 
-    return (len(tem_carrocas(m)) > 0)
+    return len(tem_carrocas(m)) > 0
 
 # P05:
 
@@ -67,7 +80,7 @@ def garagem(m):
 
 def pedra_igual_p(p1, p2):
 
-    return (p1 == p2 or p1[0] == p2[1] and p1[1] == p2[0])
+    return p1 == p2 or p1[0] == p2[1] and p1[1] == p2[0]
 
 # P09
 
@@ -125,6 +138,20 @@ def tira_maior_v(v, m):
 
 def mesap(ms):
 
+    def pontap(pt):
+
+        if len(pt) != 2:
+
+            return 0 <= pt[0] <= 6
+
+        else:
+
+            return pedrap(pt) and carrocap(pt)
+
+    def carrocas_iguais(ms):
+
+        return []
+
     return [pt for pt in ms if not pontap(pt)] == [] and len(ms) == 4
 
 # P18
@@ -158,4 +185,3 @@ def pode_jogar_p(p, ms):
 # P21
 
 # def marca_ponto_p(p, ms):
-
