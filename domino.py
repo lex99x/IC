@@ -1,28 +1,5 @@
+from domino_fn import *
 from functools import reduce
-
-# Funções globais
-
-def soma(a, b):
-
-    return a + b
-
-def soma_pontas(p):
-
-    return p[0]+p[1]
-
-def pontap(pt):
-
-    if len(pt) == 2:
-
-        return pedrap(pt) and carrocap(pt)
-
-    else:
-        
-        return 0 <= pt[0] <= 6 
-
-def retorna_pedras_ponta(a, m):
-
-    return [p for p in m if a == p[0] or a == p[1]]
 
 # P01:
 
@@ -81,10 +58,10 @@ def garagem(m):
     if soma % 5 == 0:
 
         return soma
-    
+
     else:
 
-        return [(soma - i) for i in range(1, 5) if (soma - i) % 5 == 0][0]
+        return [soma - i for i in range(1, 5) if (soma - i) % 5 == 0][0]
 
 # P08
 
@@ -149,3 +126,36 @@ def tira_maior_v(v, m):
 def mesap(ms):
 
     return [pt for pt in ms if not pontap(pt)] == [] and len(ms) == 4
+
+# P18
+
+def carroca_m_p(ms):
+
+    return not [pt for pt in ms if len(pt) == 2] == []
+
+# P19
+
+def pontos_marcados(ms):
+
+    def soma_pt(pt):
+
+        if len(pt) == 1:
+
+            return pt[0]
+
+        else: 
+
+            return pt[0]+pt[1]
+
+    return reduce(soma, [soma_pt(pt) for pt in ms])
+
+# P20
+
+def pode_jogar_p(p, ms):
+
+    return not [pt for pt in ms if p[0] == pt[0] or p[1] == pt[0]] == []
+
+# P21
+
+# def marca_ponto_p(p, ms):
+
