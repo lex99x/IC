@@ -8,35 +8,58 @@ def soma(a, b):
 
 def soma_pontas(p):
 
-    return p[0]+p[1]
+    return p[0] + p[1]
 
 def retorna_pedras_ponta(a, m):
 
     return [p for p in m if a == p[0] or a == p[1]]
 
+def count_iguais_a(p, m):
+
+    return [pedra_igual_p(p, px) for px in m].count(True)
+
+def tem_duplicidades(m):
+
+    if type(m) is list:
+
+        return reduce(soma, [count_iguais_a(px, m) - 1 for px in m]) > 0
+
+    else:
+
+        return reduce(soma, [count_iguais_a(cx, ms) - 1 for cx in ms if len(cx) == 2]) > 0
+
+def tem_invalidos(mx):
+
+    if type(mx) is list:
+
+        return len([pd for pd in mx if not pedrap(pd)]) > 0
+
+    else: 
+
+        return len([pt for pt in mx if not pontap(pt)]) > 0
+
+def pontap(pt):
+
+    if len(pt) != 2:
+
+        return 0 <= pt[0] <= 6
+
+    else:
+
+        return pedrap(pt) and carrocap(pt)
+
+
 # P01:
 
 def pedrap(p):
 
-    return 0 <= p[0] <= 6  and 0 <= p[1] <=6
+    return 0 <= p[0] <= 6 and 0 <= p[1] <= 6
 
 # P02:
 
 def maop(m):
 
-    def invalidos(m):
-
-        return [p for p in m if not pedrap(p)]
-
-    def count_iguais_a(p, m):
-
-        return [pedra_igual_p(p, px) for px in m].count(True)
-
-    def verificar_duplicidade(m):
-
-        return reduce(soma, [count_iguais_a(px, m) - 1 for px in m]) > 0
-
-    return invalidos(m) == [] and not verificar_duplicidade(m) and len(m) <= 7
+    return not tem_invalidos(m) and not tem_duplicidades(m) and len(m) <= 7
 
 # P03:
 
@@ -138,21 +161,7 @@ def tira_maior_v(v, m):
 
 def mesap(ms):
 
-    def pontap(pt):
-
-        if len(pt) != 2:
-
-            return 0 <= pt[0] <= 6
-
-        else:
-
-            return pedrap(pt) and carrocap(pt)
-
-    def carrocas_iguais(ms):
-
-        return []
-
-    return [pt for pt in ms if not pontap(pt)] == [] and len(ms) == 4
+    return not tem_invalidos(ms) and not tem_duplicidades(ms) and len(ms) == 4
 
 # P18
 
