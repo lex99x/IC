@@ -10,23 +10,39 @@ def soma_pontas(p):
 
     return p[0] + p[1]
 
+def soma_pt(pt):
+
+    if len(pt) == 1:
+
+        return pt[0]
+
+    else: 
+
+        return pt[0] + pt[1]
+
 def retorna_pedras_ponta(a, m):
 
     return [p for p in m if a == p[0] or a == p[1]]
 
-def count_iguais_a(p, m):
+def count_iguais_a(px, mx):
 
-    return [pedra_igual_p(p, px) for px in m].count(True)
+    if type(mx) is list:
 
-def tem_duplicidades(m):
+        return [pedra_igual_p(px, pd) for pd in mx].count(True)
+    
+    else: 
 
-    if type(m) is list:
+        return [px == pt for pt in mx].count(True)
 
-        return reduce(soma, [count_iguais_a(px, m) - 1 for px in m]) > 0
+def tem_duplicidades(mx):
+
+    if type(mx) is list:
+
+        return not [count_iguais_a(px, mx) - 1 for px in mx if count_iguais_a(px, mx) - 1] == []
 
     else:
 
-        return reduce(soma, [count_iguais_a(cx, ms) - 1 for cx in ms if len(cx) == 2]) > 0
+        return not [count_iguais_a(cx, mx) - 1 for cx in mx if count_iguais_a(cx, mx) - 1 > 0 and len(cx) == 2] == []
 
 def tem_invalidos(mx):
 
@@ -47,7 +63,6 @@ def pontap(pt):
     else:
 
         return pedrap(pt) and carrocap(pt)
-
 
 # P01:
 
@@ -173,16 +188,6 @@ def carroca_m_p(ms):
 
 def pontos_marcados(ms):
 
-    def soma_pt(pt):
-
-        if len(pt) == 1:
-
-            return pt[0]
-
-        else: 
-
-            return pt[0]+pt[1]
-
     return reduce(soma, [soma_pt(pt) for pt in ms])
 
 # P20
@@ -193,4 +198,52 @@ def pode_jogar_p(p, ms):
 
 # P21
 
-# def marca_ponto_p(p, ms):
+def fn(ms):
+
+    return [soma_pt(pt) for pt in ms]
+
+def pot(ls):
+
+    return reduce(soma, ls)
+
+def marca_ponto_p(pd, ms):
+
+    validas = [joga_pedra(pd, ms, i) for i in range(0, 4) if joga_pedra(pd, ms, i) != False]
+
+    sn = [fn(lol) for lol in validas]
+
+    somas = [pot(ls) for ls in sn]
+
+    return [sl % 5 == 0 for sl in somas].count(True) > 0
+
+# P23
+
+def joga_pedra(pd, ms, n):
+
+    def jogadap(pd, ms, n):
+
+        if len(ms[n]) == 2:
+
+            return pd != tuple(ms[n]) and (pd[0] == ms[n][0] or pd[1] == ms[n][1])
+
+        else:
+            
+            return pd[0] == ms[n][0] or pd[1] == ms[n][0]
+
+    ms = list(ms)
+
+    if carrocap(pd) and jogadap(pd, ms, n):
+
+        ms[n] = [pd[0], pd[1]]
+
+        return tuple(ms)
+
+    elif not carrocap(pd) and jogadap(pd, ms, n):
+
+        ms[n] = [pt for pt in pd if pt != ms[n][0]]
+
+        return tuple(ms)
+
+    else:
+        
+        return False
