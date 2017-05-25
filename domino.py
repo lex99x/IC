@@ -1,6 +1,18 @@
 from functools import reduce
 
+# pd = (5, 0)
+
+# ms = ([5], [0], [5, 5], [0])
+
 # Funções gerais
+
+def nums_maiores_que(x, l):
+
+    return [y for y in l if y > x]
+
+def maior(l):
+
+    return [j for j in l if nums_maiores_que(j, l) == []][0]
 
 def soma(a, b):
 
@@ -9,6 +21,10 @@ def soma(a, b):
 def soma_pontas(p):
 
     return p[0] + p[1]
+
+def soma_mesa(ms):
+
+    return reduce(soma, [soma_pt(pt) for pt in ms])
 
 def soma_pt(pt):
 
@@ -188,7 +204,13 @@ def carroca_m_p(ms):
 
 def pontos_marcados(ms):
 
-    return reduce(soma, [soma_pt(pt) for pt in ms])
+    if soma_mesa(ms) % 5 == 0:
+
+        return soma_mesa(ms)
+
+    else:
+
+        return 0
 
 # P20
 
@@ -216,19 +238,27 @@ def marca_ponto_p(pd, ms):
 
     return [sl % 5 == 0 for sl in somas].count(True) > 0
 
+# P22
+
+def possiveis_mesas(pd, ms):
+
+    return [(n, joga_pedra(pd, ms, n)) for n in range(0, len(ms)) if joga_pedra(pd, ms, n) != False]
+
+def maior_ponto(pd, ms):
+
+    ponta_pontos = [(possiveis_mesas(pd, ms)[i][0], pontos_marcados(possiveis_mesas(pd, ms)[i][1])) for i in range(0, len(possiveis_mesas(pd, ms))) if pontos_marcados(possiveis_mesas(pd, ms)[i][1]) != 0]
+    
+    if len(ponta_pontos) == 0:
+
+        return "A pedra não marca pontos na mesa"
+
+    else:
+
+        return [ponta_pontos[i][0] for i in range(0, 4) if ponta_pontos[i][1] == maior([tp[1] for tp in ponta_pontos])][0]
+    
 # P23
 
 def joga_pedra(pd, ms, n):
-
-    def jogadap(pd, ms, n):
-
-        if len(ms[n]) == 2:
-
-            return pd != tuple(ms[n]) and (pd[0] == ms[n][0] or pd[1] == ms[n][1])
-
-        else:
-            
-            return pd[0] == ms[n][0] or pd[1] == ms[n][0]
 
     ms = list(ms)
 
@@ -247,3 +277,37 @@ def joga_pedra(pd, ms, n):
     else:
         
         return False
+
+def jogadap(pd, ms, n):
+
+    if len(ms[n]) == 2:
+
+        return pd != tuple(ms[n]) and (pd[0] == ms[n][0] or pd[1] == ms[n][1])
+
+    else:
+        
+        return pd[0] == ms[n][0] or pd[1] == ms[n][0]
+
+# P24
+
+def jogap(m, ms):
+
+    pds = []
+
+    for pd in m:
+
+        for n in list(range(0, len(ms))):
+
+            if jogadap(pd, ms, n):
+
+                pds.append(pd)
+
+    return len(pds) > 0
+
+# def jogada():
+
+#     m = [(2,2), (0,1), (5,4), (3,2), (1,1), (0,0), (6,6)]
+
+#     ms = ([0], [2], [5], [6])
+
+#     return [()]
