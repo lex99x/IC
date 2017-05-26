@@ -244,17 +244,19 @@ def possiveis_mesas(pd, ms):
 
     return [(n, joga_pedra(pd, ms, n)) for n in range(0, len(ms)) if joga_pedra(pd, ms, n) != False]
 
+def ponta_pontos(pd, ms):
+	
+	return [(possiveis_mesas(pd, ms)[i][0], pontos_marcados(possiveis_mesas(pd, ms)[i][1])) for i in range(0, len(possiveis_mesas(pd, ms))) if pontos_marcados(possiveis_mesas(pd, ms)[i][1]) != 0]	
+
 def maior_ponto(pd, ms):
 
-    ponta_pontos = [(possiveis_mesas(pd, ms)[i][0], pontos_marcados(possiveis_mesas(pd, ms)[i][1])) for i in range(0, len(possiveis_mesas(pd, ms))) if pontos_marcados(possiveis_mesas(pd, ms)[i][1]) != 0]
-    
     if len(ponta_pontos) == 0:
 
         return "A pedra não marca pontos na mesa"
 
     else:
 
-        return [ponta_pontos[i][0] for i in range(0, 4) if ponta_pontos[i][1] == maior([tp[1] for tp in ponta_pontos])][0]
+        return [ponta_pontos(pd, ms)[i][0] for i in range(0, 4) if ponta_pontos(pd, ms)[i][1] == maior([tp[1] for tp in ponta_pontos(pd, ms)])][0]
     
 # P23
 
@@ -304,10 +306,16 @@ def jogap(m, ms):
 
     return len(pds) > 0
 
-# def jogada():
+def jogada(m, ms):
 
-#     m = [(2,2), (0,1), (5,4), (3,2), (1,1), (0,0), (6,6)]
+	#m = [(2,2), (0,1), (5,4), (3,2), (1,1), (0,0), (6,6)]
 
-#     ms = ([0], [2], [5], [6])
+ 	#ms = ([0], [2], [5], [6])
 
-#     return [()]
+	return [(pd, ponta_pontos(pd, ms)) for pd in m if ponta_pontos(pd, ms) != []]
+	
+	
+	
+	
+	
+	
