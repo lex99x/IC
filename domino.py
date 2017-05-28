@@ -1,102 +1,24 @@
-from functools import reduce
+from auxiliares import *
 
-# pd = (5, 0)
-
-# ms = ([5], [0], [5, 5], [0])
-
-# Funções gerais
-
-def nums_maiores_que(x, l):
-
-    return [y for y in l if y > x]
-
-def maior(l):
-
-    return [j for j in l if nums_maiores_que(j, l) == []][0]
-
-def soma(a, b):
-
-    return a + b
-
-def soma_pontas(p):
-
-    return p[0] + p[1]
-
-def soma_mesa(ms):
-
-    return reduce(soma, [soma_pt(pt) for pt in ms])
-
-def soma_pt(pt):
-
-    if len(pt) == 1:
-
-        return pt[0]
-
-    else: 
-
-        return pt[0] + pt[1]
-
-def retorna_pedras_ponta(a, m):
-
-    return [p for p in m if a == p[0] or a == p[1]]
-
-def count_iguais_a(px, mx):
-
-    if type(mx) is list:
-
-        return [pedra_igual_p(px, pd) for pd in mx].count(True)
-    
-    else: 
-
-        return [px == pt for pt in mx].count(True)
-
-def tem_duplicidades(mx):
-
-    if type(mx) is list:
-
-        return not [count_iguais_a(px, mx) - 1 for px in mx if count_iguais_a(px, mx) - 1] == []
-
-    else:
-
-        return not [count_iguais_a(cx, mx) - 1 for cx in mx if count_iguais_a(cx, mx) - 1 > 0 and len(cx) == 2] == []
-
-def tem_invalidos(mx):
-
-    if type(mx) is list:
-
-        return len([pd for pd in mx if not pedrap(pd)]) > 0
-
-    else: 
-
-        return len([pt for pt in mx if not pontap(pt)]) > 0
-
-def pontap(pt):
-
-    if len(pt) != 2:
-
-        return 0 <= pt[0] <= 6
-
-    else:
-
-        return pedrap(pt) and carrocap(pt)
+# Parte I – Bloco I
 
 # P01:
 
-def pedrap(p):
+def pedrap(pda):
 
-    return 0 <= p[0] <= 6 and 0 <= p[1] <= 6
+    return 0 <= pda[0] <= 6 and 0 <= pda[1] <= 6
 
 # P02:
 
 def maop(m):
 
-    return not tem_invalidos(m) and not tem_duplicidades(m) and len(m) <= 7
+    return not contem_invalidos(m) and not contem_duplicidades(m) and len(m) <= 7
 
 # P03:
 
-def carrocap(p):
+def carrocap(pda):
 
-    return p[0] == p[1]
+    return pda[0] == pda[1]
 
 # P04:
 
@@ -108,67 +30,63 @@ def tem_carroca_p(m):
 
 def tem_carrocas(m):
 
-    return [c for c in m if carrocap(c)]
+    return [pda for pda in m if carrocap(pda)]
+
+# Parte I – Bloco 2
 
 # P06:
 
 def pontos(m):
 
-    return reduce(soma, [soma_pontas(p) for p in m])
+    return reduce(soma, [soma(p[0], p[1]) for p in m])
 
 # P07
 
 def garagem(m):
 
-    soma = pontos(m)
+    if pontos(m) % 5 == 0:
 
-    if soma % 5 == 0:
-
-        return soma
+        return pontos(m)
 
     else:
 
-        return [soma - i for i in range(1, 5) if (soma - i) % 5 == 0][0]
+        return [pontos(m) - n for n in range(1, 5) if (pontos(m) - n) % 5 == 0][0]
 
 # P08
 
-def pedra_igual_p(p1, p2):
+def pedra_igual_p(pda1, pda2):
 
-    return p1 == p2 or p1[0] == p2[1] and p1[1] == p2[0]
+    return pda1 == pda2 or pda1[0] == pda2[1] and pda1[1] == pda2[0]
 
 # P09
 
-def ocorre_pedra_p(p, m):
+def ocorre_pedra_p(pda, m):
 
-    return [pedra_igual_p(p, px) for px in m].count(True) > 0
+    return len([pdax for pdax in m if pedra_igual_p(pdax, pda)]) > 0
 
 # P10
 
-def ocorre_valor_p(a, m):
+def ocorre_valor_p(pta, m):
 
-    return len(retorna_pedras_ponta(a, m)) > 0
+    return len(pdas_para_pta(pta, m)) > 0
 
 # P11
 
-def ocorre_pedra(v, m):
+def ocorre_pedra(pta, m):
 
-    return retorna_pedras_ponta(v, m)
+    return pdas_para_pta(pta, m)
 
 # P12
 
 def pedra_maior(m):
 
-    def maiores_que(p, m):
-
-        return [x for x in m if soma_pontas(x) > soma_pontas(p)]
-
-    return [y for y in m if maiores_que(y, m) == []][0]
+    return maior(m)
 
 # P13
 
-def ocorre_valor_q(v, m):
+def ocorre_valor_q(pta, m):
 
-    return len(ocorre_pedra(v, m))
+    return len(ocorre_pedra(pta, m))
 
 # P14
 
@@ -180,33 +98,35 @@ def ocorre_carroca_q(m):
 
 def tira_maior(m):
 
-    return [p for p in m if not pedra_igual_p(p, pedra_maior(m))]
+    return [pda for pda in m if not pedra_igual_p(pda, pedra_maior(m))]
 
 # P16
 
-def tira_maior_v(v, m):
+def tira_maior_v(pta, m):
 
-    return pedra_maior(retorna_pedras_ponta(v, m))
+    return pedra_maior(pdas_para_pta(pta, m))
+
+# Parte I – Bloco 3
 
 # P17
 
-def mesap(ms):
+def mesap(msa):
 
-    return not tem_invalidos(ms) and not tem_duplicidades(ms) and len(ms) == 4
+    return not contem_invalidos(msa) and not contem_duplicidades(msa) and len(msa) == 4
 
 # P18
 
-def carroca_m_p(ms):
+def carroca_m_p(msa):
 
-    return not [pt for pt in ms if len(pt) == 2] == []
+    return len([pta for pta in msa if len(pta) == 2 and carrocap(pta)]) > 0
 
 # P19
 
-def pontos_marcados(ms):
+def pontos_marcados(msa):
 
-    if soma_mesa(ms) % 5 == 0:
+    if multiplo_de_cinco(soma_msa(msa)):
 
-        return soma_mesa(ms)
+        return soma_msa(msa)
 
     else:
 
@@ -214,15 +134,17 @@ def pontos_marcados(ms):
 
 # P20
 
-def pode_jogar_p(p, ms):
+def pode_jogar_p(pda, msa):
 
-    return not [pt for pt in ms if p[0] == pt[0] or p[1] == pt[0]] == []
+    return len(ptas_para_pda(pda, msa)) > 0
+
+# Daqui pra frente o negócio fica tenso
 
 # P21
 
 def fn(ms):
 
-    return [soma_pt(pt) for pt in ms]
+    return [soma_pta(pt) for pt in ms]
 
 def pot(ls):
 
@@ -262,6 +184,10 @@ def maior_ponto(pd, ms):
 
 def joga_pedra(pd, ms, n):
 
+    # if pode_jogar_p(pd, ms):
+
+
+
     ms = list(ms)
 
     if carrocap(pd) and jogadap(pd, ms, n):
@@ -279,6 +205,8 @@ def joga_pedra(pd, ms, n):
     else:
         
         return False
+
+
 
 def jogadap(pd, ms, n):
 
@@ -306,16 +234,20 @@ def jogap(m, ms):
 
     return len(pds) > 0
 
+def n_pd(pd, m):
+
+    return [n for n, pdx in enumerate(m) if pdx == pd][0]
+
+def n_pta_maior_pontuacao(pd, ms):
+
+    if ponta_pontos(pd, ms) != []:
+
+        return [ptax_ptox[0] for ptax_ptox in ponta_pontos(pd, ms) if ptax_ptox[1] == maior([pta_pto[1] for pta_pto in ponta_pontos(pd, ms)])][0]
+
+    else:
+
+        return False
+
 def jogada(m, ms):
 
-	#m = [(2,2), (0,1), (5,4), (3,2), (1,1), (0,0), (6,6)]
-
- 	#ms = ([0], [2], [5], [6])
-
-	return [(pd, ponta_pontos(pd, ms)) for pd in m if ponta_pontos(pd, ms) != []]
-	
-	
-	
-	
-	
-	
+	return [(n_pd(pdx, m), n_pta_maior_pontuacao(pdx, ms)) for pdx in m if type(n_pta_maior_pontuacao(pdx, ms)) != bool]
