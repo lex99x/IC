@@ -150,3 +150,9 @@ def mesa_por_indice(indice, m, msa):
     from domino import joga_pedra
 
     return joga_pedra(m[indice[0]], msa, indice[1])
+
+# Verifica se ldj contém sequencia de pedras em pontas erradas
+
+def sequencias_em_pontas_erradas(ldj):
+
+    return ldj[2] != [] and ldj[4] != []

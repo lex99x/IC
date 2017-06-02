@@ -191,3 +191,11 @@ def jogada(m, msa):
 def faz_jogada(m, msa):
 
     return [mesa_por_indice(indice, m, msa) for indice in jogada(m, msa)]
+
+# Parte I – Bloco 4
+
+# P27
+
+def lista_de_jogadas(ljg):
+
+    return pedrap(ljg[0]) and 
