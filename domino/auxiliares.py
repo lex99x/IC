@@ -93,7 +93,7 @@ def pontap(pta):
 
         return pedrap(pta) and carrocap(pta)
 
-# Verifica se mx contém elementos inválidos, complementa as funções maop e mesap (boolean)
+# Verifica se mx contém elementos inválidos, complementa as funções maop, mesap e sequencia_contem_invalidos (boolean)
 
 def contem_invalidos(mx):
 
@@ -151,8 +151,8 @@ def mesa_por_indice(indice, m, msa):
 
     return joga_pedra(m[indice[0]], msa, indice[1])
 
-# Verifica se ldj contém sequencia de pedras em pontas erradas
+# Verifica se ldj contém elementos inválidos, complementa a função do problema P27 (boolean)
 
-def sequencias_em_pontas_erradas(ldj):
+def sequencia_contem_invalidos(ldj):
 
-    return ldj[2] != [] and ldj[4] != []
+    return len([ldj[i] for i in range(len(ldj)) if contem_invalidos(ldj[i])]) > 0

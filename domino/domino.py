@@ -196,6 +196,6 @@ def faz_jogada(m, msa):
 
 # P27
 
-def lista_de_jogadas(ljg):
+def lista_de_jogadas(ldj):
 
-    return pedrap(ljg[0]) and 
+    return not sequencia_contem_invalidos(ldj) and (ldj[2] != [] and ldj[4] != [])
