@@ -156,10 +156,6 @@ def maior_ponto(pda, msa):
     
         return [pontuacao_de_pda_em_pontas[0] for pontuacao_de_pda_em_pontas in pontuacoes_de_pda_em_pontas(pda, msa) if pontuacao_de_pda_em_pontas[1] == maior_pontuacao][0]
 
-    # else:
-
-    #     return False
-
 # P23
 
 def joga_pedra(pda, msa, n):
@@ -196,6 +192,72 @@ def faz_jogada(m, msa):
 
 # P27
 
-def lista_de_jogadas(ldj):
+def lista_de_jogadas(msa2):
 
-    return not sequencia_contem_invalidos(ldj) and (ldj[2] != [] and ldj[4] != [])
+    return not contem_invalidos(reduce(soma, msa2)) and not contem_duplicidades(reduce(soma, msa2)) and msa2[2] != [] and msa2[4] != []
+
+# P28
+
+def mesa2p(msa2):
+
+    return mesap(msa2_para_msa(msa2))
+
+# P29
+
+def marca_ponto_2(msa2):
+
+    return pontos_marcados(msa2_para_msa(msa2))
+
+# P30
+
+def faz_jogada_2(pda, msa2, n):
+
+    if pda[1] == msa2[n+1][0][0]:
+
+        msa2[n+1].insert(0, pda)
+
+    else:
+
+        msa2[n+1].insert(0, (pda[1], pda[0]))
+
+    return msa2
+
+# P31
+
+def pedra_de_ponto(msa):
+
+    if len(pedras_de_ponto(msa)) > 0:
+
+        return pedras_de_ponto(msa)[0]
+
+    else:
+
+        return None
+
+# P32
+
+def pedras_de_ponto(msa):
+
+    return [pda for pda in pdas() if marca_ponto_p(pda, msa)]
+
+# P33
+
+def pedra_de_maior_ponto(msa):
+
+    combinacoes = []
+
+    for pda in pedras_de_ponto(msa):
+
+        for n in ptas_para_pda(pda, msa):
+
+            combinacoes.append((pda, joga_pedra(pda, msa, n)))
+
+    maior_pontuacao = maior([soma_msa(combinacao[1]) for combinacao in combinacoes])
+
+    return [combinacao[0] for combinacao in combinacoes if soma_msa(combinacao[1]) == maior_pontuacao][0]
+
+# P34
+
+def pedras_fora_p(msa2, pda):
+
+    return [pdax for pdax in reduce(soma, msa2) if pedra_igual_p(pda, pdax)] == []

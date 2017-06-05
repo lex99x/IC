@@ -11,6 +11,20 @@ from abstratas import *
 # px: pedra OU ponta
 # n: número (índice) de ponta de mesa
 
+# Retorna lista de todas as pedras do jogo de dominó, complementa a função do problema P31 (list)
+
+def pdas():
+
+    pedras = []
+
+    for i in range(7):
+
+        for j in range(i, 7):
+
+            pedras.append((i, j))
+
+    return pedras
+
 # Retorna soma dos lados de pta (int)
 
 def soma_pta(pta):
@@ -107,7 +121,7 @@ def contem_invalidos(mx):
 
         return len([pta for pta in mx if not pontap(pta)]) > 0
 
-# Retorna lista de duplas com a enésima ponta de msa e a combinação de pda em msa na ponta n, respectivamente, complementa a função pontos_pda_em_msa (list)
+# Retorna lista de duplas com a enésima ponta de msa e a combinação de pda em msa na ponta n (list)
 
 def combinacoes_possiveis(pda, msa):
 
@@ -151,8 +165,26 @@ def mesa_por_indice(indice, m, msa):
 
     return joga_pedra(m[indice[0]], msa, indice[1])
 
-# Verifica se ldj contém elementos inválidos, complementa a função do problema P27 (boolean)
+# Retorna tupla com equivalente de msa2 no formato de mesa 1, complementa as funções dos problemas P28 e P29 (tuple)
 
-def sequencia_contem_invalidos(ldj):
+def msa2_para_msa(msa2):
 
-    return len([ldj[i] for i in range(len(ldj)) if contem_invalidos(ldj[i])]) > 0
+    from domino import carrocap
+
+    ptas = []
+
+    for i in range(1, len(msa2)):
+
+        if len(msa2[i]) == 0:
+
+            ptas.append([msa2[0][0][0]])
+
+        elif carrocap(msa2[i][0]):
+
+            ptas.append(list(msa2[i][0]))
+
+        else:
+
+            ptas.append([msa2[i][0][0]])
+
+    return tuple(ptas)
