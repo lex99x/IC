@@ -88,4 +88,4 @@ def completa_seq(m, n):
 
 def maiorseq(m):
 
-    return maior_len([ordena(valores(n, m)) for n in ('c', 'e', 'o', 'p') if len(valores(n, m)) and ocorre_seq(ordena(valores(n, m)))]
+    return maior_len([ordena(valores(n, m)) for n in ('c', 'e', 'o', 'p') if len(valores(n, m)) and ocorre_seq(ordena(valores(n, m)))])
