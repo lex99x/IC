@@ -32,22 +32,63 @@ def ordena(xs):
 
 def valores(n, m):
 
-    return [v for (nx, v) in m if nx == n]
+    if m == []:
+
+        return m
+
+    elif head(m)[0] == n:
+
+        return [head(m)[1]] + valores(n, tail(m))
+
+    else:
+
+        return valores(n, tail(m))
 
 def cartas(n, vs):
 
-    return [(n, v) for v in vs]
+    if vs == []:
 
-def ocorre(x, xs):
+        return vs
 
-    return len([y for y in xs if y == x]) > 0
+    else:
+
+        return [(n, head(vs))] + cartas(n, tail(vs))
+
+
+def iguais(k, ls):
+
+    if ls == []:
+
+        return ls
+
+    elif head(ls) == k:
+
+        return [head(ls)] + iguais(k, tail(ls))
+
+    else:
+
+        return iguais(k, tail(ls))
+
+def nao_ocorrem(xs, ls):
+
+    if xs == []:
+
+        return xs
+
+    elif iguais(head(xs), ls) == []:
+
+        return [head(xs)] + nao_ocorrem(tail(xs), ls)
+
+    else:
+
+        return nao_ocorrem(tail(xs), ls)
 
 def ocorre_seq(xs):
 
     if len(xs) == 1:
 
         return True
-    
+
     elif head(xs) + 1 == head(tail(xs)):
 
         return ocorre_seq(tail(xs))
@@ -56,19 +97,70 @@ def ocorre_seq(xs):
 
         return False
 
-def ocorre_maiores(l, ls):
+def ocorre_seq2(xs):
 
-    return [x for x in ls if len(x) > len(l)] != []
+    return head(xs) == 1 and xs[len(xs) - 1] == 13
+
+def maiores(k, ls):
+
+    if ls == []:
+
+        return ls
+
+    elif len(head(ls)) > len(k):
+
+        return [head(ls)] + maiores(k, tail(ls))
+
+
+    else:
+
+        return maiores(k, tail(ls))
 
 def maior_len(ls):
 
-    return len(head([l for l in ls if not ocorre_maiores(l, ls)]))
+    if ls == []:
+
+        return len(ls)
+
+    elif maiores(head(ls), tail(ls)) == []:
+
+        return len(head(ls))
+
+    else:
+
+        return maior_len(tail(ls))
+
+def sequencias(m, ns):
+
+    if ns == []:
+
+        return ns
+
+    elif len(valores(head(ns), m)) and (ocorre_seq(ordena(valores(head(ns), m))) or ocorre_seq2(ordena(valores(head(ns), m)))):
+
+        return [ordena(valores(head(ns), m))] + sequencias(m, tail(ns))
+
+    else:
+
+        return sequencias(m, tail(ns))
+
+ns = ['c', 'e', 'o', 'p']
 
 # 1:
 
 def arruma(m):
 
-    return cartas('c', ordena(valores('c', m))) + cartas('e', ordena(valores('e', m))) + cartas('o', ordena(valores('o', m))) + cartas('p', ordena(valores('p', m)))
+    def arruma_ns(m, ns):
+
+        if ns == []:
+
+            return ns
+
+        else:
+
+            return cartas(head(ns), ordena(valores(head(ns), m))) + arruma_ns(m, tail(ns))
+
+    return arruma_ns(m, ns)
 
 # 2:
 
@@ -78,14 +170,20 @@ def completa_seq(m, n):
 
     if vs:
 
-        return [x for x in range(vs[0], vs[len(vs) - 1]) if not ocorre(x, vs)]
+        return nao_ocorrem(list(range(head(vs), vs[len(vs) - 1])), vs)
 
     else:
 
-        return []
+        return vs
 
 # 3:
 
 def maiorseq(m):
 
-    return maior_len([ordena(valores(n, m)) for n in ('c', 'e', 'o', 'p') if len(valores(n, m)) and ocorre_seq(ordena(valores(n, m)))])
+    return maior_len(sequencias(m, ns))
+
+# Questão bônus (opcional):
+
+def maiorseq2(m):
+
+    return maiorseq(m)
