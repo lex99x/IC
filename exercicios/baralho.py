@@ -111,7 +111,6 @@ def maiores(k, ls):
 
         return [head(ls)] + maiores(k, tail(ls))
 
-
     else:
 
         return maiores(k, tail(ls))
