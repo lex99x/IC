@@ -42,11 +42,7 @@ def permuta_c(xs, ys, xsc):
 
     else: return freq(xs[0], xsc) == freq(xs[0], ys) and permuta_c(xs[1:], ys, xsc)
 
-def permuta(xs, ys):
-
-    xsc = xs
-
-    return permuta_c(xs, ys, xsc)
+def permuta(xs, ys): return permuta_c(xs, ys, xs)
 
 # 4:
 
